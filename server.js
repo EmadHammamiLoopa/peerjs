@@ -21,9 +21,13 @@ const server = app.listen(PORT, () => {
 // PeerJS options (optional)
 const peerServer = ExpressPeerServer(server, {
     debug: true,
-    path: PEER_PATH,
+    path: "/peerjs", // 🔹 Ensure PeerJS is always at /peerjs
     allow_discovery: true
 });
+
+// ✅ Attach PeerJS to Express
+app.use("/peerjs", peerServer);
+
 
 // Attach PeerJS to Express
 app.use(PEER_PATH, peerServer);
