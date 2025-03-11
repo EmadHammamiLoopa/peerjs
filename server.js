@@ -1,0 +1,42 @@
+require('dotenv').config();
+const express = require("express");
+const { ExpressPeerServer } = require("peer");
+const cors = require("cors");
+
+// Initialize Express App
+const app = express();
+
+// Enable CORS for all requests
+app.use(cors());
+
+// Get port from environment variables (default: 9000)
+const PORT = process.env.PORT || 9000;
+const PEER_PATH = process.env.PEER_PATH || "/peerjs";
+
+// Create a PeerJS Server
+const server = app.listen(PORT, () => {
+    console.log(`‚úÖ PeerJS server is running on port ${PORT}`);
+});
+
+// PeerJS options (optional)
+const peerServer = ExpressPeerServer(server, {
+    debug: true,
+    path: PEER_PATH,
+    allow_discovery: true
+});
+
+// Attach PeerJS to Express
+app.use(PEER_PATH, peerServer);
+
+// Health check endpoint
+app.get("/", (req, res) => {
+    res.send("‚úÖ PeerJS Signaling Server is Running!");
+});
+
+// Handle errors
+peerServer.on("error", (err) => {
+    console.error("‚ùå PeerJS Error:", err);
+});
+
+console.log(`Ì∫Ä PeerJS server is ready at: http://localhost:${PORT}${PEER_PATH}`);
+
