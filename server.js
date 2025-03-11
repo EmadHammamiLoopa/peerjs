@@ -38,5 +38,7 @@ peerServer.on("error", (err) => {
     console.error("‚ùå PeerJS Error:", err);
 });
 
-console.log(`Ì∫Ä PeerJS server is ready at: http://localhost:${PORT}${PEER_PATH}`);
+const PEER_SERVER_URL = process.env.RENDER_PEER_URL || `http://localhost:${PORT}${PEER_PATH}`;
+
+console.log(`‚úÖ PeerJS server is ready at: ${PEER_SERVER_URL}`);
 
