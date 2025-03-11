@@ -13,36 +13,30 @@ app.use(cors());
 const PORT = process.env.PORT || 9000;
 const PEER_PATH = process.env.PEER_PATH || "/peerjs";
 
-// Create a PeerJS Server
-const server = app.listen(PORT, () => {
-    console.log(`✅ PeerJS server is running on port ${PORT}`);
-});
+// ✅ Create HTTP Server
+const server = require("http").createServer(app);
 
-// PeerJS options (optional)
+// ✅ Attach PeerJS Server
 const peerServer = ExpressPeerServer(server, {
     debug: true,
-    path: "/peerjs", // 🔹 Ensure PeerJS is always at /peerjs
+    path: "/",
     allow_discovery: true
 });
 
-// ✅ Attach PeerJS to Express
+// ✅ Mount PeerJS on `/peerjs`
 app.use("/peerjs", peerServer);
 
-
-// Attach PeerJS to Express
-app.use(PEER_PATH, peerServer);
-
-// Health check endpoint
+// ✅ Health check route
 app.get("/", (req, res) => {
     res.send("✅ PeerJS Signaling Server is Running!");
 });
 
-// Handle errors
+// ✅ Start Server
+server.listen(PORT, () => {
+    console.log(`✅ PeerJS server is running at https://peerjs-whei.onrender.com/peerjs`);
+});
+
+// ✅ Log errors
 peerServer.on("error", (err) => {
     console.error("❌ PeerJS Error:", err);
 });
-
-const PEER_SERVER_URL = process.env.RENDER_PEER_URL || `http://localhost:${PORT}${PEER_PATH}`;
-
-console.log(`✅ PeerJS server is ready at: ${PEER_SERVER_URL}`);
-
