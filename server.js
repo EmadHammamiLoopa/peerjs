@@ -19,7 +19,7 @@ const server = require("http").createServer(app);
 // ✅ Attach PeerJS Server
 const peerServer = ExpressPeerServer(server, {
     debug: true,
-    path: "/peerjs",
+    path: "/peerjs", // Ensure this matches the client's path
     allow_discovery: true
 });
 
@@ -39,4 +39,14 @@ server.listen(PORT, () => {
 // ✅ Log errors
 peerServer.on("error", (err) => {
     console.error("❌ PeerJS Error:", err);
+});
+
+// ✅ Log generated peer IDs
+peerServer.on("connection", (client) => {
+    console.log(`✅ New peer connected with ID: ${client.getId()}`);
+});
+
+// ✅ Log when a peer disconnects
+peerServer.on("disconnect", (client) => {
+    console.log(`❌ Peer disconnected with ID: ${client.getId()}`);
 });
