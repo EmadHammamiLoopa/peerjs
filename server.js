@@ -19,7 +19,7 @@ const server = require("http").createServer(app);
 // ✅ Attach PeerJS Server
 const peerServer = ExpressPeerServer(server, {
     debug: true,
-    path: "/",
+    path: "/peerjs",
     allow_discovery: true
 });
 
